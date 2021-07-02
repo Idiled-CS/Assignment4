@@ -1,35 +1,13 @@
 import React, { Component } from 'react'
-
+import { Link } from 'react-router-dom'
 
 export default class Debits extends Component {
     constructor(props){
         super(props)
-        this.state = {
-            credits:[],
-            isLoaded: false
-        }
     }
-    
-    componentDidMount = async () => {
-        await fetch("https://moj-api.herokuapp.com/debits")
-        .then((res) => res.json())
-        .then((json) => {
-            this.setState({
-                credits: json,
-                isLoaded: true
-            })
 
-            console.log(this.state.credits)
-        })
-    
-
-        .catch((err) => {
-            console.log(err)
-            return 0
-        })
-    }
     render() {
-        if(!this.state.isLoaded){
+        if(!this.props.debitIsLoaded){
             return(
                 <div>Is Loading...</div>
             )
@@ -37,12 +15,13 @@ export default class Debits extends Component {
         return (
             <div>
                 <ul>
-                    {this.state.credits.map((cred) => {
-                        return <li key = {cred.id}> 
-                                Item Name: {cred.description} COST: {cred.amount} DATE: {cred.date}
-                            </li>
+                    {this.props.debits.map((deb) => {
+                        return(
+                        <li key = {deb.id}> NAME: {deb.description} COST: {deb.amount} DATE: {deb.date} </li>
+                        )
                     })}
                 </ul>
+                <Link to = "/"> Home </Link>
             </div>
         )
     }

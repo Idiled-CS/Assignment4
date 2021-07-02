@@ -13,7 +13,8 @@ export default class Home extends Component {
 
                 <Link to = "/userProfile"> User Profile </Link>
                 <Link to = "/debits"> Debits </Link>
-                
+                <Link to = "/credits"> Credits </Link>
+
                 <AccountBalance accountBalance = {this.props.accountBalance}/>
             </div>
         );
