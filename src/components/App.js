@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from "./Home";
 import UserProfile from './UserProfile';
 import Login from './Login';
+import Debits from './Debits';
 
 
 export default class App extends Component {
@@ -18,14 +19,52 @@ export default class App extends Component {
     super(props);
   
     this.state = {
-      accountBalance: 12341,
+      accountBalance: 200,
 
       currentUser: {
         userName: "Joe_Shmo",
         memberSince: "07/23/96",
-      }
+      },
+
+        credits:[],
+        creditIsLoaded: false,
+
+        debits:[],
+        debitIsLoaded: false
     }
   };
+
+  componentDidMount = async () => {
+      await fetch("https://moj-api.herokuapp.com/credits")
+      .then((res) => res.json())
+      .then((json) => {
+          this.setState({
+              credits: json,
+              creditIsLoaded: true
+          })
+
+          console.log(this.state.credits)
+      })
+      .catch((err) => {
+          console.log(err)
+          return 0
+      })
+
+      await fetch("https://moj-api.herokuapp.com/debits")
+      .then((res) => res.json())
+      .then((json) => {
+          this.setState({
+              debits: json,
+              debitIsLoaded: true
+          })
+
+          console.log(this.state.credits)
+      })
+      .catch((err) => {
+        console.log(err)
+        return 0
+    })
+  }
   render() {
     
     const LogInComponent = () => (<Login user={this.state.currentUser} mockLogIn={this.mockLogIn} />)
@@ -33,6 +72,7 @@ export default class App extends Component {
     const UserProfileComponent = () => (
       <UserProfile userName = {this.state.currentUser.userName} memberSince = {this.state.currentUser.memberSince}/>
     )
+    const DebitComponent = () => (<Debits debits = {this.state.debits} debitIsLoaded = {this.state.debitIsLoaded} />)
 
     return (
       <Router>
@@ -40,6 +80,7 @@ export default class App extends Component {
             <Route exact path = "/" render = {HomeComponent}/>
             <Route exact path = "/userProfile" render = {UserProfileComponent} />
             <Route exact path = "/Login" render = {LogInComponent}/>
+            <Route exact path = "/Debits" render = {DebitComponent}/>
 
         </Switch>
       </Router>
