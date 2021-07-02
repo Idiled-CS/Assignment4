@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from "./Home";
 import UserProfile from './UserProfile';
 import Login from './Login';
+import Debits from './Debits';
 
 
 export default class App extends Component {
@@ -33,6 +34,7 @@ export default class App extends Component {
     const UserProfileComponent = () => (
       <UserProfile userName = {this.state.currentUser.userName} memberSince = {this.state.currentUser.memberSince}/>
     )
+    const DebitComponent = () => (<Debits />)
 
     return (
       <Router>
@@ -40,6 +42,7 @@ export default class App extends Component {
             <Route exact path = "/" render = {HomeComponent}/>
             <Route exact path = "/userProfile" render = {UserProfileComponent} />
             <Route exact path = "/Login" render = {LogInComponent}/>
+            <Route exact path = "/Debits" render = {DebitComponent}/>
 
         </Switch>
       </Router>
