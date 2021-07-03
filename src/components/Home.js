@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AccountBalance from './AccountBalance';
 import bankPicture from '../Pictures/bank.png';
 import { Link } from 'react-router-dom';
-
+import '../App.css';
 
 export default class Home extends Component {
     render() {

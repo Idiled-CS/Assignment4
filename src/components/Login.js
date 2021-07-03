@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import '../App.css';
 
 export default class Login extends Component {
     constructor(props){
