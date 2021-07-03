@@ -5,6 +5,7 @@ import Home from "./Home";
 import UserProfile from './UserProfile';
 import Login from './Login';
 import Debits from './Debits';
+import Credits from './Credits';
 
 
 export default class App extends Component {
@@ -15,11 +16,42 @@ export default class App extends Component {
     this.setState({currentUser: newUser})
   }
 
+  debitSubmission = (debInfo) => {
+    this.state.debits.push(debInfo)
+
+    console.log(this.state.debits);
+
+  }
+
+  creditSubmission = (credInfo) => {
+    this.state.credits.push(credInfo)
+
+    console.log(this.state.credits);
+  }
+
+  accountBalanceCalculator = () => {
+    var debitTotal = 0
+    var creditTotal = 0
+
+    this.state.credits.map((cred) => creditTotal += cred.amount )
+    this.state.debits.map((deb) => debitTotal += deb.amount )
+
+    console.log(debitTotal)
+    console.log(creditTotal)
+
+    this.setState(
+      {accountBalance:Math.round((creditTotal - debitTotal) * 100) / 100}
+    )
+
+    console.log(this.state.accountBalance)
+  }
+
+
   constructor(props){
     super(props);
   
     this.state = {
-      accountBalance: 200,
+      accountBalance: 0,
 
       currentUser: {
         userName: "Joe_Shmo",
@@ -27,10 +59,8 @@ export default class App extends Component {
       },
 
         credits:[],
-        creditIsLoaded: false,
 
         debits:[],
-        debitIsLoaded: false
     }
   };
 
@@ -40,7 +70,7 @@ export default class App extends Component {
       .then((json) => {
           this.setState({
               credits: json,
-              creditIsLoaded: true
+
           })
 
           console.log(this.state.credits)
@@ -55,15 +85,17 @@ export default class App extends Component {
       .then((json) => {
           this.setState({
               debits: json,
-              debitIsLoaded: true
+
           })
 
-          console.log(this.state.credits)
+          console.log(this.state.debits)
       })
       .catch((err) => {
         console.log(err)
         return 0
     })
+
+    this.accountBalanceCalculator()
   }
   render() {
     
@@ -72,7 +104,8 @@ export default class App extends Component {
     const UserProfileComponent = () => (
       <UserProfile userName = {this.state.currentUser.userName} memberSince = {this.state.currentUser.memberSince}/>
     )
-    const DebitComponent = () => (<Debits debits = {this.state.debits} debitIsLoaded = {this.state.debitIsLoaded} />)
+    const DebitComponent = () => (<Debits calculate = {this.accountBalanceCalculator} debits = {this.state.debits} accountBalance = {this.state.accountBalance} debitSubmission = {this.debitSubmission}/>)
+    const CreditComponent = () => (<Credits calculate = {this.accountBalanceCalculator} credits = {this.state.credits} accountBalance = {this.state.accountBalance} creditSubmission = {this.creditSubmission}/>)
 
     return (
       <Router>
@@ -81,6 +114,8 @@ export default class App extends Component {
             <Route exact path = "/userProfile" render = {UserProfileComponent} />
             <Route exact path = "/Login" render = {LogInComponent}/>
             <Route exact path = "/Debits" render = {DebitComponent}/>
+            <Route exact path = "/Credits" render = {CreditComponent}/>
+
 
         </Switch>
       </Router>
