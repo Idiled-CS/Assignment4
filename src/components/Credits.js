@@ -57,7 +57,7 @@ export default class Credits extends Component {
                     <input onChange = {this.handleChange} name = "amount" type = "text" placeholder = "Cost"></input>
                     <button type = "submit">Add Credit</button>
                 </form>
-                <span>Account Balance: {this.props.accountBalance} </span>
+                <span className = "Bal" >Account Balance: {this.props.accountBalance} </span>
                 <Link to = "/"> Home </Link>
             </div>
         )
